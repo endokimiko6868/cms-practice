@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>こむぎベーカリー | お知らせ</title>
+  <style>
+    :root {
+      --bg: #f3f6f4;      /* 背景 */
+      --text: #1f2a24;    /* 文字 */
+      --sub: #5c6b62;     /* 日付など */
+      --line: #cfd9d3;    /* 区切り線 */
+      --accent: #2f6f4f;  /* カテゴリー */
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17201b; --text: #e6ece8; --sub: #9fb0a6;
+        --line: #33433a; --accent: #8fd1ad;
+      }
+    }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+      line-height: 1.8;
+    }
+    main { max-width: 640px; margin: 0 auto; padding: 48px 20px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    .lead { color: var(--sub); margin: 0 0 32px; }
+    .news { border-top: 1px solid var(--line); padding: 20px 0; }
+    .meta { color: var(--sub); font-size: 0.85rem; }
+    .category { color: var(--accent); font-weight: bold; margin-left: 8px; }
+    .title { font-size: 1.15rem; margin: 4px 0; }
+    .body { margin: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>こむぎベーカリーのお知らせ</h1>
+    <p class="lead">news.json に書いた内容が、ここに並びます。</p>
+
+    <!-- ↓ この箱の中に、お知らせが入る -->
+    <div id="news-list"></div>
+  </main>
+
+  <script>
+    // ① 倉庫(news.json)から中身を取ってくる
+    fetch("news.json")
+      .then(res => res.json())
+      .then(list => {
+        // ② 1件ずつ、型(テンプレート)にはめて表示する
+        list.forEach(item => {
+          document.querySelector("#news-list").innerHTML += `
+            <article class="news">
+              <div class="meta">${item.date}<span class="category">${item.category}</span></div>
+              <h2 class="title">${item.title}</h2>
+              <p class="body">${item.body}</p>
+            </article>`;
+        });
+      });
+  </script>
+</body>
+</html>
